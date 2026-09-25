@@ -15,7 +15,23 @@ export default {
       const expected=String(env.POS_MANAGER_AUTH||'');
       const managerOK=expected.length>0&&String(body.password||body.managerPassword||'')===expected;
 
-      if(body.action==='verify-manager')return Response.json({ok:managerOK});
+      if(body.action==='verify-manager')return Response.json({ok:managerOK,error:managerOK?undefined:(expected.length?'manager':'server_config')});
+
+      if(body.action==='login'){
+        const username=String(body.username||'').trim().normalize('NFC');
+        const password=String(body.password||'');
+        if(!username||!password)return Response.json({ok:false,error:'invalid'},{status:400});
+        const serviceKey=String(env.SUPABASE_SERVICE_ROLE_KEY||'');
+        if(!serviceKey)return Response.json({ok:false,error:'server_config'},{status:500});
+        const loginTokenHash=await sha256(username+'|'+password);
+        const res=await fetch(SUPABASE_URL+'/rest/v1/pos_users?select=username,role,active,permissions&username=eq.'+encodeURIComponent(username)+'&login_token_hash=eq.'+loginTokenHash+'&active=eq.true&limit=1',{
+          headers:{apikey:serviceKey,Authorization:'Bearer '+serviceKey}
+        });
+        if(!res.ok)return Response.json({ok:false,error:'database'},{status:500});
+        const rows=await res.json();
+        if(!rows.length)return Response.json({ok:false,error:'credentials'},{status:401});
+        return Response.json({ok:true,user:rows[0]});
+      }
 
       if(body.action==='create-user'){
         if(!managerOK)return Response.json({ok:false,error:'manager'},{status:403});
