@@ -11,6 +11,7 @@ export async function pullSnapshots(){
 
 const seedUser='الكندي',seedHash='41c95f39c7397c5cbcd30aeff3cf8e93c5a8d3202ed39cbe4c9efe90feeca057';
 export async function loginPOS(username,pin){
+ username=String(username).trim().normalize('NFC');pin=String(pin).replace(/[^0-9]/g,'');
  const bytes=new TextEncoder().encode(username+'|'+pin);
  const digest=await crypto.subtle.digest('SHA-256',bytes);
  const token=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
