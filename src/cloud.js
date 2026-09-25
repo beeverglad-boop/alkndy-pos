@@ -13,7 +13,7 @@ const seedUser='الكندي',seedHash='41c95f39c7397c5cbcd30aeff3cf8e93c5a8d320
 async function hashLogin(username,pin){username=String(username).trim().normalize('NFC');pin=String(pin);const bytes=new TextEncoder().encode(username+'|'+pin);const digest=await crypto.subtle.digest('SHA-256',bytes);return[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('')}
 export async function savePOSUser(adminUsername,adminPassword,username,password,role,permissions={}){const adminToken=await hashLogin(adminUsername,adminPassword),token=await hashLogin(username,password);const{data,error}=await supabase.rpc('pos_save_user',{p_admin_username:adminUsername,p_admin_token:adminToken,p_username:String(username).trim(),p_token_hash:token,p_role:role,p_permissions:permissions});if(error)throw error;return data}
 export async function loginPOS(username,pin){
- username=String(username).trim().normalize('NFC');pin=String(pin).replace(/[^0-9]/g,'');
+ username=String(username).trim().normalize('NFC');pin=String(pin);
  const bytes=new TextEncoder().encode(username+'|'+pin);
  const digest=await crypto.subtle.digest('SHA-256',bytes);
  const token=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
