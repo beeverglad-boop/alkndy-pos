@@ -1,1 +1,22 @@
-{"name":"alkndy-pos","private":true,"version":"0.2.0","type":"module","scripts":{"dev":"vite","build":"vite build","preview":"vite preview"},"dependencies":{"@vitejs/plugin-react":"latest","vite":"latest","react":"latest","react-dom":"latest","xlsx":"latest","jspdf":"latest","jspdf-autotable":"latest"},"devDependencies":{}}
+{
+  "name": "alkndy-pos",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "xlsx": "latest",
+    "jspdf": "latest",
+    "jspdf-autotable": "latest",
+    "@supabase/supabase-js": "latest"
+  },
+  "devDependencies": {}
+}
