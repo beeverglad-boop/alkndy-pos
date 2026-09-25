@@ -1,0 +1,1 @@
+export const defaultSettings={businessNameAr:'الكندي',businessNameEn:'alkndy',vatNumber:'',address:'',vatRate:15,currency:'SAR'};export const loadSettings=()=>({...defaultSettings,...JSON.parse(localStorage.getItem('alkndy_settings')||'{}')});export const saveSettings=s=>localStorage.setItem('alkndy_settings',JSON.stringify(s));
