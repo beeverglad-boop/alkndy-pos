@@ -1,0 +1,1 @@
+export async function verifyManager(password){try{const r=await fetch('/api/pos-auth',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'verify-manager',password})});const d=await r.json();return d.ok===true}catch{return false}}
